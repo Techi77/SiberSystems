@@ -2,16 +2,33 @@ import java.io.File
 
 fun main() {
     println("Hi, I'm working")
-    readTxtFile()
+    val arrayOfCoordinates = readingTxtFile()
+    writingHTMLFile(arrayOfCoordinates)
 }
 
-fun readTxtFile() {
+fun readingTxtFile(): List<String> {
     val fileString: String = File("src/main/resources/rectangles.txt").readText()
     println("Text in file: $fileString")
-    val arr = fileString.replace("\\s".toRegex(), "").split(";")
+    return fileString.replace("\\s".toRegex(), "").split(";")
+}
+
+fun writingHTMLFile(arrayOfCoordinates: List<String>) {
+    val minXAndMinYArr = minXAndMinY(arrayOfCoordinates)
+    File("src/main/resources/result.html").writeText("<table>")
+    var topPadding: String = ""
+    if (minXAndMinYArr[1] > 0) {
+        topPadding =
+            "\n  <tr>\n" + "    <td style=\"width: ${minXAndMinYArr[0]}; height: ${minXAndMinYArr[1]}\"></td>\n" + "  </tr>"
+    }
+    File("src/main/resources/result.html").appendText(topPadding)
+    File("src/main/resources/result.html").appendText("\n</table>")
+}
+
+fun minXAndMinY(arrayOfCoordinates: List<String>): ArrayList<Int> {
+    val minXAndMinYArr = arrayListOf(-1, -1)
     var minX: Int = -1
     var minY: Int = -1
-    arr.forEach {
+    arrayOfCoordinates.forEach {
         if (minX > it.substringBefore(',').toInt() || minX < 0) {
             minX = it.substringBefore(',').toInt()
         }
@@ -19,6 +36,7 @@ fun readTxtFile() {
             minY = it.substringAfter(',').toInt()
         }
     }
-    println("maxX: $minX")
-    println("maxY: $minY")
+    minXAndMinYArr[0] = minX
+    minXAndMinYArr[1] = minY
+    return minXAndMinYArr
 }
