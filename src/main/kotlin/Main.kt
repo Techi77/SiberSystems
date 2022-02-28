@@ -1,19 +1,17 @@
 import java.io.File
 
 fun main() {
-    println("Hi, I'm working")
     val arrayOfCoordinates = readingTxtFile()
     writingHTMLFile(arrayOfCoordinates)
 }
 
 fun readingTxtFile(): List<String> {
     val fileString: String = File("src/main/resources/rectangles.txt").readText()
-    println("Text in file: $fileString")
     return fileString.replace("\\s".toRegex(), "").split(";")
 }
 
 fun writingHTMLFile(arrayOfCoordinates: List<String>) {
-    val minXMinYMaxYArr = minXAndMinY(arrayOfCoordinates)
+    val minXMinYMaxYArr = minXMinYMaxY(arrayOfCoordinates)
     File("src/main/resources/result.html").writeText("<table>")
     var topPadding = ""
     if (minXMinYMaxYArr[1] > 0) {
@@ -24,16 +22,14 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
     val arrayOfXAndY = divisionIntoXAndY(arrayOfCoordinates)
     val arrayOfX = arrayOfXAndY[0]
     val arrayOfY = arrayOfXAndY[1]
-    var drawingLineNum = 0
+    var drawingLineNum: Int
     val redLine = mutableListOf<String>()
     var i = 0
     repeat(minXMinYMaxYArr[2] - minXMinYMaxYArr[1]) {
         drawingLineNum = it + minXMinYMaxYArr[1]
-        println("drawingLineNum: $drawingLineNum")
         arrayOfY.forEach {
             if (drawingLineNum >= it.substringBefore(',').toInt() && drawingLineNum <= it.substringAfter(',').toInt()) {
                 if (drawingLineNum < arrayOfY[i].substringAfter(',').toInt()) redLine.add(arrayOfX[i])
-                println("  redLine: $redLine")
             }
             i += 1
         }
@@ -76,12 +72,10 @@ fun divisionIntoXAndY(arrayOfCoordinates: List<String>): Array<MutableList<Strin
         arrayOfY.add("${arrayOfCoordinates[i].substringAfter(',')},${arrayOfCoordinates[i + 1].substringAfter(',')}")
         arrayOfX.add("${arrayOfCoordinates[i].substringBefore(',')},${arrayOfCoordinates[i + 1].substringBefore(',')}")
     }
-    println("arrayOfY: $arrayOfY")
-    println("arrayOfX: $arrayOfX")
     return arrayOf(arrayOfX, arrayOfY)
 }
 
-fun minXAndMinY(arrayOfCoordinates: List<String>): ArrayList<Int> {
+fun minXMinYMaxY(arrayOfCoordinates: List<String>): ArrayList<Int> {
     val minXMinYMaxYArr = arrayListOf(-1, -1, -1)
     var minX: Int = -1
     var minY: Int = -1
