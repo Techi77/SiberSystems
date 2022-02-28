@@ -18,7 +18,7 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
     var topPadding = ""
     if (minXMinYMaxYArr[1] > 0) {
         topPadding =
-            "\n  <tr>\n" + "    <td style=\"width: ${if (minXMinYMaxYArr[0] > 0) minXMinYMaxYArr[0] else 1}; height: ${minXMinYMaxYArr[1]}\"></td>\n" + "  </tr>"
+            "\n  <tr>\n" + "    <td style=\"width: ${if (minXMinYMaxYArr[0] > 0) minXMinYMaxYArr[0] * 50 else 1}; height: ${minXMinYMaxYArr[1] * 50}\"></td>\n" + "  </tr>"
     }
     File("src/main/resources/result.html").appendText(topPadding)
     val arrayOfXAndY = divisionIntoXAndY(arrayOfCoordinates)
@@ -27,12 +27,12 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
     var drawingLineNum = 0
     val redLine = mutableListOf<String>()
     var i = 0
-    repeat(minXMinYMaxYArr[2] - minXMinYMaxYArr[1] + 1) {
+    repeat(minXMinYMaxYArr[2] - minXMinYMaxYArr[1]) {
         drawingLineNum = it + minXMinYMaxYArr[1]
         println("drawingLineNum: $drawingLineNum")
         arrayOfY.forEach {
             if (drawingLineNum >= it.substringBefore(',').toInt() && drawingLineNum <= it.substringAfter(',').toInt()) {
-                redLine.add(arrayOfX[i])
+                if (drawingLineNum < arrayOfY[i].substringAfter(',').toInt()) redLine.add(arrayOfX[i])
                 println("  redLine: $redLine")
             }
             i += 1
@@ -46,22 +46,22 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
 }
 
 fun newLine(hasLeftPadding: Boolean, redLine: MutableList<String>) {
-    var lineInFile = "  <tr style=\"height: 50\">\n"
+    var lineInFile = "\n  <tr style=\"height: 50\">\n"
     if (hasLeftPadding) {
         lineInFile = "$lineInFile    <td></td>"
     }
 
     for (i in 0..redLine.lastIndex) {
         repeat(redLine[i].substringAfter(',').toInt() - redLine[i].substringBefore(',').toInt()) {
-            lineInFile = "$lineInFile\n    <td style=\"background-color: red; width: 50\"></td>"
+            lineInFile = "$lineInFile\n    <td style=\"background-color: green; width: 50\"></td>"
         }
-        if(i < redLine.lastIndex){
-            repeat(redLine[i+1].substringBefore(',').toInt() - redLine[i].substringAfter(',').toInt()){
+        if (i < redLine.lastIndex) {
+            repeat(redLine[i + 1].substringBefore(',').toInt() - redLine[i].substringAfter(',').toInt()) {
                 lineInFile = "$lineInFile\n    <td style=\"width: 50\"></td>"
             }
         }
     }
-    lineInFile = "$lineInFile  </tr>"
+    lineInFile = "$lineInFile\n  </tr>"
     File("src/main/resources/result.html").appendText(lineInFile)
 }
 
