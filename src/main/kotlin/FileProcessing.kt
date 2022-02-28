@@ -5,7 +5,6 @@ fun readingNewFile() {
     var oldTr = mutableListOf<String>()
     var newTr = mutableListOf<String>()
     var countOfAppearances = 1
-    val filteredTr = ""
     File("src/main/resources/notFilteredHtml.html").readLines().forEach {
         notFilteredHtml.add(it)
     }
