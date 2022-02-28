@@ -37,7 +37,8 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
             }
             i += 1
         }
-        //newLine(minXMinYMaxYArr[0] > 0, redLine)
+        redLine.sort()
+        newLine(minXMinYMaxYArr[0] > 0, redLine)
         i = 0
         redLine.removeAll() { it.contains("") }
     }
@@ -48,6 +49,17 @@ fun newLine(hasLeftPadding: Boolean, redLine: MutableList<String>) {
     var lineInFile = "  <tr style=\"height: 50\">\n"
     if (hasLeftPadding) {
         lineInFile = "$lineInFile    <td></td>"
+    }
+
+    for (i in 0..redLine.lastIndex) {
+        repeat(redLine[i].substringAfter(',').toInt() - redLine[i].substringBefore(',').toInt()) {
+            lineInFile = "$lineInFile\n    <td style=\"background-color: red; width: 50\"></td>"
+        }
+        if(i < redLine.lastIndex){
+            repeat(redLine[i+1].substringBefore(',').toInt() - redLine[i].substringAfter(',').toInt()){
+                lineInFile = "$lineInFile\n    <td style=\"width: 50\"></td>"
+            }
+        }
     }
     lineInFile = "$lineInFile  </tr>"
     File("src/main/resources/result.html").appendText(lineInFile)
