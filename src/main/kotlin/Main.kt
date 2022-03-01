@@ -5,6 +5,7 @@ fun main() {
     try {
         writingHTMLFile(arrayOfCoordinates)
         writingNewFileSortedByY()
+        writingNewFileSortedByX()
     } catch (e: NumberFormatException) {
         println(
             "Проверьте вводимые данные. Возможные ошибки:"
