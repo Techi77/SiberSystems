@@ -83,42 +83,46 @@ fun writingNewFileSortedByX() {
     }
     println("widthArray:\n$widthArray")
     println("positiveWidthArray: \n$positiveWidthArray")
-    var minInTr = positiveWidthArray[0][0]
-    var maxSizeOfArr = 0
+    var minInTr = 0
+    var maxLastIndexOfArr = 0
     var difference = 0
     positiveWidthArray.forEach {
-        if (maxSizeOfArr < it.size) maxSizeOfArr = it.size
+        if (maxLastIndexOfArr < it.lastIndex) maxLastIndexOfArr = it.lastIndex
     }
-    positiveWidthArray.forEach {
-        if (minInTr > it[0]) minInTr = it[0]
-    }
-    for (i in 0..positiveWidthArray.lastIndex) {
-        difference = positiveWidthArray[i][0] - minInTr
-        if (difference != 0) {
-            if (widthArray[i][0] >= 0 && widthArray[i][1] >= 0) {
-                widthArray[i][1] += difference
-                positiveWidthArray[i][1] += difference
-            } else if (widthArray[i][0] < 0 && widthArray[i][1] < 0) {
-                widthArray[i][1] -= difference
-                positiveWidthArray[i][1] += difference
-            } else if (widthArray[i][0] >= 0) {
-                widthArray[i].add(1, difference)
-                positiveWidthArray[i].add(1, difference)
-            } else if (widthArray[i][0] < 0) {
-                widthArray[i].add(1, -difference)
-                positiveWidthArray[i].add(1, difference)
+    for (j in 0..maxLastIndexOfArr) {
+        positiveWidthArray.forEach {
+            if (it.lastIndex>=j && (minInTr > it[j] || minInTr==0)) {
+                minInTr = it[j]
             }
-
-            widthArray[i][0] += if (widthArray[i][0] >= 0) {
-                -difference
-            } else {
-                difference
-            }
-            positiveWidthArray[i][0] -= difference
         }
+        for (i in 0..positiveWidthArray.lastIndex) {
+            if(widthArray[i].lastIndex >= j){
+                difference = positiveWidthArray[i][j] - minInTr
+                if (difference != 0) {
+                    if (widthArray[i].lastIndex > j && widthArray[i][j] >= 0 && widthArray[i][j+1] >= 0) {
+                        widthArray[i][j+1] += difference
+                        positiveWidthArray[i][j+1] += difference
+                    } else if (widthArray[i].lastIndex > j && widthArray[i][j] < 0 && widthArray[i][j+1] < 0) {
+                        widthArray[i][1] -= difference
+                        positiveWidthArray[i][j+1] += difference
+                    } else if (widthArray[i][j] >= 0) {
+                        widthArray[i].add(j+1, difference)
+                        positiveWidthArray[i].add(j+1, difference)
+                    } else if (widthArray[i][j] < 0) {
+                        widthArray[i].add(j+1, -difference)
+                        positiveWidthArray[i].add(j+1, difference)
+                    }
+                    widthArray[i][j] += if (widthArray[i][j] >= 0) {
+                        -difference
+                    } else {
+                        difference
+                    }
+                    positiveWidthArray[i][j] -= difference
+                }
+            }
+        }
+        minInTr = 0
     }
-    println("minInTr: $minInTr")
-    println("minInTr: $maxSizeOfArr")
     println("widthArray:\n$widthArray")
     println("positiveWidthArray: \n$positiveWidthArray")
 }
