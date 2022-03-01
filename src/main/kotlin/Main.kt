@@ -4,7 +4,7 @@ fun main() {
     val arrayOfCoordinates = readingTxtFile()
     try {
         writingHTMLFile(arrayOfCoordinates)
-        readingNewFile()
+        writingNewFileSortedByY()
     } catch (e: NumberFormatException) {
         println(
             "Проверьте вводимые данные. Возможные ошибки:"

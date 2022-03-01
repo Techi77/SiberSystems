@@ -1,19 +1,16 @@
 import java.io.File
+import java.util.LinkedList
 
-fun readingNewFile() {
-    val notFilteredHtml = mutableListOf<String>()
+fun writingNewFileSortedByY() {
     var oldTr = mutableListOf<String>()
     var newTr = mutableListOf<String>()
     var countOfAppearances = 1
     File("src/main/resources/notFilteredHtml.html").readLines().forEach {
-        notFilteredHtml.add(it)
-    }
-    notFilteredHtml.forEach {
         if (it.contains("<table>")) {
-            File("src/main/resources/result.html").writeText(it)
+            File("src/main/resources/filteredByY.html").writeText(it)
         } else if (it.contains("</table>")) {
             oldTr.forEach {
-                File("src/main/resources/result.html").appendText(
+                File("src/main/resources/filteredByY.html").appendText(
                     "\n${
                         it.replace(
                             "\"height: 50\"",
@@ -22,18 +19,17 @@ fun readingNewFile() {
                     }"
                 )
             }
-            File("src/main/resources/result.html").appendText("\n$it")
+            File("src/main/resources/filteredByY.html").appendText("\n$it")
         } else if (it.contains("<tr") or it.contains("<td")) {
             newTr.add(it)
         } else if (it.contains("</tr>")) {
             newTr.add(it)
             if (oldTr == newTr) {
                 countOfAppearances += 1
-                println("countOfRepeat=$countOfAppearances")
-                newTr.removeAll() { it.contains("") }
+                newTr.clear()
             } else {
                 oldTr.forEach {
-                    File("src/main/resources/result.html").appendText(
+                    File("src/main/resources/filteredByY.html").appendText(
                         "\n${
                             it.replace(
                                 "\"height: 50\"",
@@ -42,9 +38,38 @@ fun readingNewFile() {
                         }"
                     )
                 }
-                oldTr.removeAll() { it.contains("") }
+                oldTr.clear()
                 oldTr.addAll(newTr)
-                newTr.removeAll() { it.contains("") }
+                newTr.clear()
+                countOfAppearances = 1
+            }
+        }
+    }
+}
+
+fun writingNewFileSortedByX() {
+    var oldTr = "1"
+    var newTr = "2"
+    var i: Int = -1
+    var y: Int
+    var countOfAppearances = 1
+    val widthML: MutableList<Int> = mutableListOf()
+    val widthMLML: MutableList<MutableList<Int>> = mutableListOf()
+    File("src/main/resources/filteredByY.html").readLines().forEach {
+        if (it.contains("<tr")) {
+            i += 1
+        }
+        else if (it.contains("</tr>")) {
+            oldTr = "1"
+            newTr = "2"
+            widthMLML.add(widthML)
+            widthML.clear()
+        } else if (it.contains("<td")) {
+            if (oldTr == newTr) {
+                countOfAppearances += 1
+            } else {
+                y = if (it.contains("green")) 1 else -1
+                widthML.add(50 * countOfAppearances * y)
                 countOfAppearances = 1
             }
         }

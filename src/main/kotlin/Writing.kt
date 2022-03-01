@@ -41,7 +41,7 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
         newLine(minX, greenLine)
         // обнуление переменных
         i = 0
-        greenLine.removeAll() { it.contains("") }
+        greenLine.clear()
     }
 
     // Конец отрисовки
