@@ -81,8 +81,7 @@ fun writingNewFileSortedByX() {
             }
         }
     }
-    println("widthArray:\n$widthArray")
-    println("positiveWidthArray: \n$positiveWidthArray")
+    println("widthArray(not filtered):\n$widthArray")
     var minInTr = 0
     var maxLastIndexOfArr = 0
     var difference = 0
@@ -123,6 +122,5 @@ fun writingNewFileSortedByX() {
         }
         minInTr = 0
     }
-    println("widthArray:\n$widthArray")
-    println("positiveWidthArray: \n$positiveWidthArray")
+    println("widthArray (filtered):\n$widthArray")
 }
