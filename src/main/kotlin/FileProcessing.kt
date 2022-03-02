@@ -58,6 +58,7 @@ fun writingNewFileSortedByX() {
         if (it.contains("<tr")) {
             widthArray.add(mutableListOf())
             positiveWidthArray.add(mutableListOf())
+            countOfAppearances = 0
         } else if (it.contains("</tr>")) {
             j = if (oldTr.contains("green")) 1 else -1
             widthArray[i].add(50 * countOfAppearances * j)
@@ -70,13 +71,14 @@ fun writingNewFileSortedByX() {
             newTr = it
             if (oldTr == newTr) {
                 countOfAppearances += 1
-            } else if (countOfAppearances > 1) {
+            } else if (countOfAppearances >= 1) {
                 j = if (oldTr.contains("green")) 1 else -1
                 widthArray[i].add(50 * countOfAppearances * j)
                 positiveWidthArray[i].add(50 * countOfAppearances)
                 countOfAppearances = 1
                 oldTr = newTr
             } else {
+                countOfAppearances = 1
                 oldTr = newTr
             }
         }
@@ -87,28 +89,31 @@ fun writingNewFileSortedByX() {
     positiveWidthArray.forEach {
         if (maxLastIndexOfArr < it.lastIndex) maxLastIndexOfArr = it.lastIndex
     }
+    println(
+        "old positiveWidthArray:\n$positiveWidthArray\nold widthArray:\n$widthArray"
+    )
     for (j in 0..maxLastIndexOfArr) {
         positiveWidthArray.forEach {
-            if (it.lastIndex>=j && (minInTr > it[j] || minInTr==0)) {
+            if (it.lastIndex >= j && (minInTr > it[j] || minInTr == 0)) {
                 minInTr = it[j]
             }
         }
         for (i in 0..positiveWidthArray.lastIndex) {
-            if(widthArray[i].lastIndex >= j){
+            if (widthArray[i].lastIndex >= j) {
                 difference = positiveWidthArray[i][j] - minInTr
                 if (difference != 0) {
-                    if (widthArray[i].lastIndex > j && widthArray[i][j] >= 0 && widthArray[i][j+1] >= 0) {
-                        widthArray[i][j+1] += difference
-                        positiveWidthArray[i][j+1] += difference
-                    } else if (widthArray[i].lastIndex > j && widthArray[i][j] < 0 && widthArray[i][j+1] < 0) {
+                    if (widthArray[i].lastIndex > j && widthArray[i][j] >= 0 && widthArray[i][j + 1] >= 0) {
+                        widthArray[i][j + 1] += difference
+                        positiveWidthArray[i][j + 1] += difference
+                    } else if (widthArray[i].lastIndex > j && widthArray[i][j] < 0 && widthArray[i][j + 1] < 0) {
                         widthArray[i][1] -= difference
-                        positiveWidthArray[i][j+1] += difference
+                        positiveWidthArray[i][j + 1] += difference
                     } else if (widthArray[i][j] >= 0) {
-                        widthArray[i].add(j+1, difference)
-                        positiveWidthArray[i].add(j+1, difference)
+                        widthArray[i].add(j + 1, difference)
+                        positiveWidthArray[i].add(j + 1, difference)
                     } else if (widthArray[i][j] < 0) {
-                        widthArray[i].add(j+1, -difference)
-                        positiveWidthArray[i].add(j+1, difference)
+                        widthArray[i].add(j + 1, -difference)
+                        positiveWidthArray[i].add(j + 1, difference)
                     }
                     widthArray[i][j] += if (widthArray[i][j] >= 0) {
                         -difference
@@ -121,24 +126,25 @@ fun writingNewFileSortedByX() {
         }
         minInTr = 0
     }
+    println(
+        "new positiveWidthArray:\n$positiveWidthArray\nnew widthArray:\n$widthArray"
+    )
     i = 0
     File("src/main/resources/filteredByY.html").readLines().forEach {
-        if(it.contains("<table>")){
+        if (it.contains("<table>")) {
             File("src/main/resources/filteredByXAndY.html").writeText(it)
-        }
-        else if(it.contains("</table>") || it.contains("</tr>")){
+        } else if (it.contains("</table>") || it.contains("</tr>")) {
             File("src/main/resources/filteredByXAndY.html").appendText("\n${it}")
-        }
-        else if(it.contains("<tr")){
+        } else if (it.contains("<tr")) {
             File("src/main/resources/filteredByXAndY.html").appendText("\n${it}")
             widthArray[i].forEach {
-                if(it<0){
-                    File("src/main/resources/filteredByXAndY.html").appendText("\n    <td style=\"width: ${it}\"></td>")
+                if (it < 0) {
+                    File("src/main/resources/filteredByXAndY.html").appendText("\n    <td style=\"width: ${it*(-1)}\"></td>")
                 } else {
                     File("src/main/resources/filteredByXAndY.html").appendText("\n    <td style=\"background-color: green; width: ${it}\"></td>")
                 }
             }
-            i+=1
+            i += 1
         }
     }
 }

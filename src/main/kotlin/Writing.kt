@@ -22,7 +22,11 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
     // Отрисовка прозрачного topPadding
     if (minY > 0) {
         topPadding =
-            "\n  <tr style=\"height: ${minY * 50}\">\n" + "    <td style=\"width: ${if (minX > 0) minX * 50 else 1}\"></td>\n" + "  </tr>"
+            "\n  <tr style=\"height: ${minY * 50}\">"
+        repeat(if (minX > 0) minX else 1) {
+            topPadding += "\n    <td style=\"width: 50\"></td>"
+        }
+        topPadding += "\n  </tr>"
     }
     File("src/main/resources/notFiltered.html").appendText(topPadding)
 
@@ -49,10 +53,12 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
 }
 
 fun newLine(minX: Int, greenLine: MutableList<String>) {
-    var lineInFile = "\n  <tr style=\"height: 50\">\n"
+    var lineInFile = "\n  <tr style=\"height: 50\">"
     // left padding
     if (minX > 0) {
-        lineInFile = "$lineInFile    <td style=\"width: ${minX * 50}\"></td>"
+        repeat(minX) {
+            lineInFile += "\n    <td style=\"width: 50\"></td>"
+        }
     }
     // прозрачный отступ
     if (greenLine.size > 0 && (greenLine[0].substringBefore(',').toInt() - minX) > 0) {
