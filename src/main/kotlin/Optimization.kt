@@ -86,11 +86,9 @@ fun writingNewFileSortedByX() {
     var minInTr = 0
     var maxLastIndexOfArr = 0
     var difference = 0
-    positiveWidthArray.forEach {
-        if (maxLastIndexOfArr < it.lastIndex) maxLastIndexOfArr = it.lastIndex
-    }
     for (j in 0..maxLastIndexOfArr) {
         positiveWidthArray.forEach {
+            if (maxLastIndexOfArr < it.lastIndex) maxLastIndexOfArr = it.lastIndex
             if (it.lastIndex >= j && (minInTr > it[j] || minInTr == 0)) {
                 minInTr = it[j]
             }
