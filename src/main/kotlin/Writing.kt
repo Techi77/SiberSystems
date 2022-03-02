@@ -17,7 +17,7 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
     val greenLine = mutableListOf<String>()
 
     // Начало отрисовки
-    File("src/main/resources/notFiltered.html").writeText("<table>")
+    File("src/main/resources/result.html").writeText("<table>")
 
     // Отрисовка прозрачного topPadding
     if (minY > 0) {
@@ -28,7 +28,7 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
         }
         topPadding += "\n  </tr>"
     }
-    File("src/main/resources/notFiltered.html").appendText(topPadding)
+    File("src/main/resources/result.html").appendText(topPadding)
 
     //отрисовка оставшейся части
     var i = 0
@@ -49,7 +49,7 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
     }
 
     // Конец отрисовки
-    File("src/main/resources/notFiltered.html").appendText("\n</table>")
+    File("src/main/resources/result.html").appendText("\n</table>")
 }
 
 fun newLine(minX: Int, greenLine: MutableList<String>) {
@@ -78,7 +78,7 @@ fun newLine(minX: Int, greenLine: MutableList<String>) {
         }
     }
     lineInFile = "$lineInFile\n  </tr>"
-    File("src/main/resources/notFiltered.html").appendText(lineInFile)
+    File("src/main/resources/result.html").appendText(lineInFile)
 }
 
 fun divisionIntoXAndY(arrayOfCoordinates: List<String>): Array<MutableList<String>> {

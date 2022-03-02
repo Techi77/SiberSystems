@@ -4,12 +4,12 @@ fun writingNewFileSortedByY() {
     var oldTr = mutableListOf<String>()
     var newTr = mutableListOf<String>()
     var countOfAppearances = 1
-    File("src/main/resources/notFiltered.html").readLines().forEach {
+    File("src/main/resources/result.html").readLines().forEach {
         if (it.contains("<table>")) {
-            File("src/main/resources/filteredByY.html").writeText(it)
+            File("src/main/resources/result.html").writeText(it)
         } else if (it.contains("</table>")) {
             oldTr.forEach {
-                File("src/main/resources/filteredByY.html").appendText(
+                File("src/main/resources/result.html").appendText(
                     "\n${
                         it.replace(
                             "\"height: 50\"",
@@ -18,7 +18,7 @@ fun writingNewFileSortedByY() {
                     }"
                 )
             }
-            File("src/main/resources/filteredByY.html").appendText("\n$it")
+            File("src/main/resources/result.html").appendText("\n$it")
         } else if (it.contains("<tr") or it.contains("<td")) {
             newTr.add(it)
         } else if (it.contains("</tr>")) {
@@ -28,7 +28,7 @@ fun writingNewFileSortedByY() {
                 newTr.clear()
             } else {
                 oldTr.forEach {
-                    File("src/main/resources/filteredByY.html").appendText(
+                    File("src/main/resources/result.html").appendText(
                         "\n${
                             it.replace(
                                 "\"height: 50\"",
@@ -54,7 +54,7 @@ fun writingNewFileSortedByX() {
     var countOfAppearances = 1
     val widthArray: MutableList<MutableList<Int>> = mutableListOf()
     val positiveWidthArray: MutableList<MutableList<Int>> = mutableListOf()
-    File("src/main/resources/filteredByY.html").readLines().forEach {
+    File("src/main/resources/result.html").readLines().forEach {
         if (it.contains("<tr")) {
             widthArray.add(mutableListOf())
             positiveWidthArray.add(mutableListOf())
@@ -89,9 +89,6 @@ fun writingNewFileSortedByX() {
     positiveWidthArray.forEach {
         if (maxLastIndexOfArr < it.lastIndex) maxLastIndexOfArr = it.lastIndex
     }
-    println(
-        "old positiveWidthArray:\n$positiveWidthArray\nold widthArray:\n$widthArray"
-    )
     for (j in 0..maxLastIndexOfArr) {
         positiveWidthArray.forEach {
             if (it.lastIndex >= j && (minInTr > it[j] || minInTr == 0)) {
@@ -126,22 +123,19 @@ fun writingNewFileSortedByX() {
         }
         minInTr = 0
     }
-    println(
-        "new positiveWidthArray:\n$positiveWidthArray\nnew widthArray:\n$widthArray"
-    )
     i = 0
-    File("src/main/resources/filteredByY.html").readLines().forEach {
+    File("src/main/resources/result.html").readLines().forEach {
         if (it.contains("<table>")) {
-            File("src/main/resources/filteredByXAndY.html").writeText(it)
+            File("src/main/resources/result.html").writeText(it)
         } else if (it.contains("</table>") || it.contains("</tr>")) {
-            File("src/main/resources/filteredByXAndY.html").appendText("\n${it}")
+            File("src/main/resources/result.html").appendText("\n${it}")
         } else if (it.contains("<tr")) {
-            File("src/main/resources/filteredByXAndY.html").appendText("\n${it}")
+            File("src/main/resources/result.html").appendText("\n${it}")
             widthArray[i].forEach {
                 if (it < 0) {
-                    File("src/main/resources/filteredByXAndY.html").appendText("\n    <td style=\"width: ${it*(-1)}\"></td>")
+                    File("src/main/resources/result.html").appendText("\n    <td style=\"width: ${it*(-1)}\"></td>")
                 } else {
-                    File("src/main/resources/filteredByXAndY.html").appendText("\n    <td style=\"background-color: green; width: ${it}\"></td>")
+                    File("src/main/resources/result.html").appendText("\n    <td style=\"background-color: green; width: ${it}\"></td>")
                 }
             }
             i += 1
