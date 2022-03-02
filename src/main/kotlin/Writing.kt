@@ -17,14 +17,14 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
     val greenLine = mutableListOf<String>()
 
     // Начало отрисовки
-    File("src/main/resources/result.html").writeText("<table>")
+    File("src/main/resources/notFiltered.html").writeText("<table>")
 
     // Отрисовка прозрачного topPadding
     if (minY > 0) {
         topPadding =
-            "\n  <tr>\n" + "    <td style=\"width: ${if (minX > 0) minX * 50 else 1}; height: ${minY * 50}\"></td>\n" + "  </tr>"
+            "\n  <tr style=\"height: ${minY * 50}\">\n" + "    <td style=\"width: ${if (minX > 0) minX * 50 else 1}\"></td>\n" + "  </tr>"
     }
-    File("src/main/resources/result.html").appendText(topPadding)
+    File("src/main/resources/notFiltered.html").appendText(topPadding)
 
     //отрисовка оставшейся части
     var i = 0
@@ -45,14 +45,14 @@ fun writingHTMLFile(arrayOfCoordinates: List<String>) {
     }
 
     // Конец отрисовки
-    File("src/main/resources/result.html").appendText("\n</table>")
+    File("src/main/resources/notFiltered.html").appendText("\n</table>")
 }
 
 fun newLine(minX: Int, greenLine: MutableList<String>) {
     var lineInFile = "\n  <tr style=\"height: 50\">\n"
     // left padding
     if (minX > 0) {
-        lineInFile = "$lineInFile    <td></td>"
+        lineInFile = "$lineInFile    <td style=\"width: ${minX * 50}\"></td>"
     }
     // прозрачный отступ
     if (greenLine.size > 0 && (greenLine[0].substringBefore(',').toInt() - minX) > 0) {
@@ -72,7 +72,7 @@ fun newLine(minX: Int, greenLine: MutableList<String>) {
         }
     }
     lineInFile = "$lineInFile\n  </tr>"
-    File("src/main/resources/result.html").appendText(lineInFile)
+    File("src/main/resources/notFiltered.html").appendText(lineInFile)
 }
 
 fun divisionIntoXAndY(arrayOfCoordinates: List<String>): Array<MutableList<String>> {
